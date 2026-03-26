@@ -1,20 +1,23 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Home, Mountain, BedDouble, Car, ShoppingBag, CalendarCheck, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const links = [
-  { to: "/", label: "الأنشطة", icon: Mountain },
-  { to: "/accommodation", label: "الإقامة", icon: BedDouble },
-  { to: "/transport", label: "النقل", icon: Car },
-  { to: "/marketplace", label: "السوق", icon: ShoppingBag },
-  { to: "/my-bookings", label: "حجوزاتي", icon: CalendarCheck },
-];
-
 const TouristNav = () => {
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  const links = [
+    { to: "/", label: t("activities"), icon: Mountain },
+    { to: "/accommodation", label: t("accommodation"), icon: BedDouble },
+    { to: "/transport", label: t("transport"), icon: Car },
+    { to: "/marketplace", label: t("marketplace"), icon: ShoppingBag },
+    { to: "/my-bookings", label: t("myBookings"), icon: CalendarCheck },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border">
@@ -43,16 +46,20 @@ const TouristNav = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <span className="text-sm text-muted-foreground">مرحباً، {user?.name}</span>
+          <LanguageSwitcher />
+          <span className="text-sm text-muted-foreground">{t("hello")} {user?.name}</span>
           <button onClick={logout} className="flex items-center gap-1 text-sm text-destructive hover:bg-destructive/10 px-3 py-2 rounded-lg transition-colors">
             <LogOut className="w-4 h-4" />
-            خروج
+            {t("logout")}
           </button>
         </div>
 
-        <button className="md:hidden" onClick={() => setOpen(!open)}>
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <LanguageSwitcher />
+          <button onClick={() => setOpen(!open)}>
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -65,7 +72,7 @@ const TouristNav = () => {
           ))}
           <button onClick={logout} className="flex items-center gap-3 px-3 py-3 rounded-lg text-destructive hover:bg-destructive/10 text-sm w-full">
             <LogOut className="w-4 h-4" />
-            خروج
+            {t("logout")}
           </button>
         </div>
       )}

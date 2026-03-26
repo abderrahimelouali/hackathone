@@ -1,20 +1,22 @@
 import { useData } from "@/contexts/DataContext";
-import { Star, Wifi, Check } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Star, Check } from "lucide-react";
 
 const Accommodation = () => {
   const { stays } = useData();
+  const { t } = useLanguage();
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-foreground mb-2">الإقامة في تنغير</h1>
-      <p className="text-muted-foreground mb-8">اختر من بين فنادق ومنازل تقليدية أصيلة</p>
+      <h1 className="text-3xl font-bold text-foreground mb-2">{t("accommodationTitle")}</h1>
+      <p className="text-muted-foreground mb-8">{t("accommodationSubtitle")}</p>
 
       <div className="grid md:grid-cols-2 gap-8">
         {stays.map((stay, i) => (
           <div key={stay.id} className="bg-card rounded-xl overflow-hidden shadow-card hover:shadow-warm transition-all animate-fade-in" style={{ animationDelay: `${i * 150}ms` }}>
             <div className="relative h-64">
               <img src={stay.image} alt={stay.title} className="w-full h-full object-cover" loading="lazy" />
-              <div className="absolute top-3 left-3 bg-card/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-foreground">
+              <div className="absolute top-3 start-3 bg-card/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-foreground">
                 {stay.type}
               </div>
             </div>
@@ -36,9 +38,9 @@ const Accommodation = () => {
                 ))}
               </div>
               <div className="flex items-center justify-between pt-4 border-t border-border">
-                <span className="text-2xl font-bold text-primary">{stay.price} <span className="text-sm font-normal text-muted-foreground">د.م / ليلة</span></span>
+                <span className="text-2xl font-bold text-primary">{stay.price} <span className="text-sm font-normal text-muted-foreground">{t("perNight")}</span></span>
                 <button className="px-6 py-2 rounded-lg gradient-hero text-primary-foreground font-medium hover:opacity-90 transition-opacity">
-                  احجز
+                  {t("book")}
                 </button>
               </div>
             </div>

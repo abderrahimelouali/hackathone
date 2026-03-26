@@ -1,19 +1,22 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { LayoutDashboard, Plus, List, ShoppingBag, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const links = [
-  { to: "/host", label: "لوحة التحكم", icon: LayoutDashboard },
-  { to: "/host/add-activity", label: "إضافة نشاط", icon: Plus },
-  { to: "/host/manage", label: "إدارة الأنشطة", icon: List },
-  { to: "/host/add-product", label: "إضافة منتج", icon: ShoppingBag },
-];
-
 const HostNav = () => {
   const { user, logout } = useAuth();
+  const { t } = useLanguage();
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  const links = [
+    { to: "/host", label: t("dashboard"), icon: LayoutDashboard },
+    { to: "/host/add-activity", label: t("addActivity"), icon: Plus },
+    { to: "/host/manage", label: t("manageActivities"), icon: List },
+    { to: "/host/add-product", label: t("addProduct"), icon: ShoppingBag },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 bg-sidebar backdrop-blur-xl border-b border-sidebar-border">
@@ -22,7 +25,7 @@ const HostNav = () => {
           <div className="w-9 h-9 rounded-lg gradient-hero flex items-center justify-center">
             <LayoutDashboard className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="font-bold text-lg text-sidebar-foreground">لوحة مقدم الخدمة</span>
+          <span className="font-bold text-lg text-sidebar-foreground">{t("hostPanel")}</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-1">
@@ -42,16 +45,20 @@ const HostNav = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
+          <LanguageSwitcher />
           <span className="text-sm text-sidebar-foreground/70">{user?.name}</span>
           <button onClick={logout} className="flex items-center gap-1 text-sm text-destructive hover:bg-destructive/10 px-3 py-2 rounded-lg transition-colors">
             <LogOut className="w-4 h-4" />
-            خروج
+            {t("logout")}
           </button>
         </div>
 
-        <button className="md:hidden text-sidebar-foreground" onClick={() => setOpen(!open)}>
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <LanguageSwitcher />
+          <button className="text-sidebar-foreground" onClick={() => setOpen(!open)}>
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -64,7 +71,7 @@ const HostNav = () => {
           ))}
           <button onClick={logout} className="flex items-center gap-3 px-3 py-3 rounded-lg text-destructive hover:bg-destructive/10 text-sm w-full">
             <LogOut className="w-4 h-4" />
-            خروج
+            {t("logout")}
           </button>
         </div>
       )}
