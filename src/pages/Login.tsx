@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import heroImg from "@/assets/hero-tinghir.jpg";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -11,22 +13,23 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"tourist" | "host">("tourist");
   const { login, register } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isRegister) {
       if (register(name, email, password, role)) {
-        toast.success("تم إنشاء الحساب بنجاح!");
+        toast.success(t("accountCreated"));
         navigate(role === "host" ? "/host" : "/");
       } else {
-        toast.error("البريد الإلكتروني مستخدم بالفعل");
+        toast.error(t("emailExists"));
       }
     } else {
       if (login(email, password)) {
-        toast.success("مرحباً بك!");
+        toast.success(t("welcomeToast"));
       } else {
-        toast.error("بيانات الدخول غير صحيحة");
+        toast.error(t("invalidCredentials"));
       }
     }
   };
@@ -34,23 +37,26 @@ const Login = () => {
   return (
     <div className="min-h-screen flex">
       <div className="hidden lg:block lg:w-1/2 relative">
-        <img src={heroImg} alt="تنغير" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={heroImg} alt="Tinghir" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-l from-foreground/80 to-foreground/40 flex items-center justify-center p-12">
           <div className="text-center">
             <h1 className="font-display text-5xl text-primary-foreground mb-4">Experiencia Tinghir</h1>
-            <p className="text-primary-foreground/80 text-lg max-w-md">اكتشف جمال تنغير — مغامرات لا تُنسى في قلب المغرب</p>
+            <p className="text-primary-foreground/80 text-lg max-w-md">{t("heroLoginSubtitle")}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-8 relative">
+        <div className="absolute top-4 end-4">
+          <LanguageSwitcher />
+        </div>
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gradient mb-2">
-              {isRegister ? "إنشاء حساب جديد" : "تسجيل الدخول"}
+              {isRegister ? t("register") : t("login")}
             </h2>
             <p className="text-muted-foreground">
-              {isRegister ? "انضم إلينا واكتشف تنغير" : "مرحباً بعودتك"}
+              {isRegister ? t("joinUs") : t("welcomeBack")}
             </p>
           </div>
 
@@ -58,7 +64,7 @@ const Login = () => {
             {isRegister && (
               <input
                 type="text"
-                placeholder="الاسم الكامل"
+                placeholder={t("fullName")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -67,7 +73,7 @@ const Login = () => {
             )}
             <input
               type="email"
-              placeholder="البريد الإلكتروني"
+              placeholder={t("email")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -75,7 +81,7 @@ const Login = () => {
             />
             <input
               type="password"
-              placeholder="كلمة المرور"
+              placeholder={t("password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -84,43 +90,43 @@ const Login = () => {
 
             {isRegister && (
               <div className="space-y-2">
-                <p className="text-sm font-medium text-foreground">نوع الحساب</p>
+                <p className="text-sm font-medium text-foreground">{t("accountType")}</p>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setRole("tourist")}
                     className={`px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all ${role === "tourist" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/50"}`}
                   >
-                    🌍 سائح
+                    {t("tourist")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setRole("host")}
                     className={`px-4 py-3 rounded-lg border-2 text-sm font-medium transition-all ${role === "host" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground hover:border-primary/50"}`}
                   >
-                    🏡 مقدم خدمة
+                    {t("host")}
                   </button>
                 </div>
               </div>
             )}
 
             <button type="submit" className="w-full py-3 rounded-lg gradient-hero text-primary-foreground font-bold text-lg hover:opacity-90 transition-opacity">
-              {isRegister ? "إنشاء الحساب" : "دخول"}
+              {isRegister ? t("createAccount") : t("enter")}
             </button>
           </form>
 
           <p className="text-center mt-6 text-sm text-muted-foreground">
-            {isRegister ? "لديك حساب بالفعل؟" : "ليس لديك حساب؟"}{" "}
+            {isRegister ? t("hasAccount") : t("noAccount")}{" "}
             <button onClick={() => setIsRegister(!isRegister)} className="text-primary font-medium hover:underline">
-              {isRegister ? "تسجيل الدخول" : "إنشاء حساب"}
+              {isRegister ? t("loginLink") : t("registerLink")}
             </button>
           </p>
 
           {!isRegister && (
             <div className="mt-8 p-4 rounded-lg bg-muted border border-border">
-              <p className="text-xs font-medium text-muted-foreground mb-2">حسابات تجريبية:</p>
-              <p className="text-xs text-muted-foreground">سائح: tourist@test.com / 123456</p>
-              <p className="text-xs text-muted-foreground">مقدم خدمة: host@test.com / 123456</p>
+              <p className="text-xs font-medium text-muted-foreground mb-2">{t("demoAccounts")}</p>
+              <p className="text-xs text-muted-foreground">{t("demoTourist")}</p>
+              <p className="text-xs text-muted-foreground">{t("demoHost")}</p>
             </div>
           )}
         </div>

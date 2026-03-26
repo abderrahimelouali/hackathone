@@ -1,10 +1,12 @@
 import { useData } from "@/contexts/DataContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { BarChart3, Mountain, ShoppingBag, CalendarCheck, TrendingUp } from "lucide-react";
 
 const HostDashboard = () => {
   const { activities, bookings, products } = useData();
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   const myActivities = activities.filter((a) => a.hostId === user?.id);
   const myBookings = bookings.filter((b) => myActivities.some((a) => a.id === b.activityId));
@@ -15,17 +17,17 @@ const HostDashboard = () => {
   }, 0);
 
   const stats = [
-    { label: "الأنشطة", value: myActivities.length, icon: Mountain, color: "text-primary" },
-    { label: "الحجوزات", value: myBookings.length, icon: CalendarCheck, color: "text-accent" },
-    { label: "المنتجات", value: myProducts.length, icon: ShoppingBag, color: "text-gold" },
-    { label: "الإيرادات", value: `${totalRevenue} د.م`, icon: TrendingUp, color: "text-olive" },
+    { label: t("activitiesStat"), value: myActivities.length, icon: Mountain, color: "text-primary" },
+    { label: t("bookingsStat"), value: myBookings.length, icon: CalendarCheck, color: "text-accent" },
+    { label: t("productsStat"), value: myProducts.length, icon: ShoppingBag, color: "text-gold" },
+    { label: t("revenueStat"), value: `${totalRevenue} ${t("currency")}`, icon: TrendingUp, color: "text-olive" },
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">مرحباً، {user?.name} 👋</h1>
-        <p className="text-muted-foreground mb-8">إليك ملخص نشاطك</p>
+        <h1 className="text-3xl font-bold text-foreground mb-2">{t("welcomeHost")} {user?.name} 👋</h1>
+        <p className="text-muted-foreground mb-8">{t("activitySummary")}</p>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {stats.map((s, i) => (
@@ -37,14 +39,13 @@ const HostDashboard = () => {
           ))}
         </div>
 
-        {/* Recent Bookings */}
         <div className="bg-card rounded-xl shadow-card p-6">
           <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary" />
-            آخر الحجوزات
+            {t("recentBookings")}
           </h2>
           {myBookings.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">لا توجد حجوزات بعد</p>
+            <p className="text-muted-foreground text-center py-8">{t("noBookingsYet")}</p>
           ) : (
             <div className="space-y-3">
               {myBookings.slice(-5).reverse().map((b) => {
@@ -53,7 +54,7 @@ const HostDashboard = () => {
                   <div key={b.id} className="flex justify-between items-center p-3 bg-muted rounded-lg">
                     <div>
                       <p className="font-medium text-foreground">{act?.title}</p>
-                      <p className="text-sm text-muted-foreground">{b.date} — {b.persons} أشخاص</p>
+                      <p className="text-sm text-muted-foreground">{b.date} — {b.persons} {t("persons")}</p>
                     </div>
                     <span className="text-sm font-medium text-accent">{b.status}</span>
                   </div>
