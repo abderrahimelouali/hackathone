@@ -22,7 +22,7 @@ const categoryIcons: Record<string, any> = {
 const AddActivity = () => {
   const { addActivity } = useData();
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
