@@ -158,6 +158,15 @@ const translations = {
   welcomeToast: { ar: "مرحباً بك!", fr: "Bienvenue !", en: "Welcome!" },
   invalidCredentials: { ar: "بيانات الدخول غير صحيحة", fr: "Identifiants incorrects", en: "Invalid credentials" },
   heroLoginSubtitle: { ar: "اكتشف جمال تنغير — مغامرات لا تُنسى في قلب المغرب", fr: "Découvrez la beauté de Tinghir — aventures inoubliables au cœur du Maroc", en: "Discover the beauty of Tinghir — unforgettable adventures in the heart of Morocco" },
+  
+  // New categories
+  rafting: { ar: "رافتينغ", fr: "Rafting", en: "Rafting" },
+  quad: { ar: "كواد", fr: "Quad", en: "Quad" },
+  camping: { ar: "تخييم", fr: "Camping", en: "Camping" },
+  horseRiding: { ar: "ركوب الخيل", fr: "Équitation", en: "Horse Riding" },
+  camelRiding: { ar: "ركوب الجمال", fr: "Balade en chameau", en: "Camel Riding" },
+  pottery: { ar: "فخار", fr: "Poterie", en: "Pottery" },
+  weaving: { ar: "نسيج", fr: "Tissage", en: "Weaving" },
 } as const;
 
 type TranslationKey = keyof typeof translations;
