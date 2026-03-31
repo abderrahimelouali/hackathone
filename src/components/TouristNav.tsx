@@ -2,21 +2,25 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Home, Mountain, BedDouble, Car, ShoppingBag, CalendarCheck, LogOut, Menu, X, Compass } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
+import NotificationBell from "@/components/NotificationBell";
+import { Home, Mountain, BedDouble, Car, ShoppingBag, CalendarCheck, LogOut, Menu, X, Compass, MapPin, BookOpen, User } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TouristNav = () => {
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
   const links = [
     { to: "/", label: t("activities"), icon: Mountain },
+    { to: "/map", label: lang === "fr" ? "Carte" : lang === "en" ? "Map" : "الخريطة", icon: MapPin },
     { to: "/accommodation", label: t("accommodation"), icon: BedDouble },
     { to: "/transport", label: t("transport"), icon: Car },
     { to: "/marketplace", label: t("marketplace"), icon: ShoppingBag },
+    { to: "/blog", label: lang === "fr" ? "Blog" : lang === "en" ? "Blog" : "المدونة", icon: BookOpen },
     { to: "/my-bookings", label: t("myBookings"), icon: CalendarCheck },
   ];
 
@@ -33,7 +37,7 @@ const TouristNav = () => {
           </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-0.5 bg-muted/50 rounded-xl p-1">
+        <div className="hidden lg:flex items-center gap-0.5 bg-muted/50 rounded-xl p-1">
           {links.map((l) => {
             const active = location.pathname === l.to;
             return (
@@ -43,27 +47,31 @@ const TouristNav = () => {
                 className={`relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${active ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               >
                 <l.icon className="w-4 h-4" />
-                <span className="hidden lg:inline">{l.label}</span>
+                <span className="hidden xl:inline">{l.label}</span>
               </Link>
             );
           })}
         </div>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-1.5">
+          <ThemeToggle />
+          <NotificationBell />
           <LanguageSwitcher />
-          <div className="w-px h-6 bg-border" />
-          <div className="flex items-center gap-2">
+          <div className="w-px h-6 bg-border mx-1" />
+          <Link to="/profile" className="flex items-center gap-2 hover:bg-muted px-2 py-1.5 rounded-lg transition-colors">
             <div className="w-8 h-8 rounded-full gradient-hero flex items-center justify-center text-primary-foreground text-xs font-bold">
               {user?.name?.charAt(0)}
             </div>
             <span className="text-sm font-medium text-foreground hidden xl:inline">{user?.name}</span>
-          </div>
+          </Link>
           <button onClick={logout} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-destructive px-2 py-1.5 rounded-lg transition-colors">
             <LogOut className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex md:hidden items-center gap-1.5">
+          <ThemeToggle />
+          <NotificationBell />
           <LanguageSwitcher />
           <button onClick={() => setOpen(!open)} className="p-2 rounded-lg hover:bg-muted transition-colors">
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -77,7 +85,7 @@ const TouristNav = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border/50 bg-card overflow-hidden"
+            className="lg:hidden border-t border-border/50 bg-card overflow-hidden"
           >
             <div className="p-3 space-y-1">
               {links.map((l) => {
@@ -95,6 +103,10 @@ const TouristNav = () => {
                 );
               })}
               <div className="border-t border-border my-2" />
+              <Link to="/profile" onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-muted">
+                <User className="w-5 h-5" />
+                {lang === "fr" ? "Mon profil" : lang === "en" ? "My Profile" : "ملفي الشخصي"}
+              </Link>
               <div className="flex items-center justify-between px-4 py-2">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full gradient-hero flex items-center justify-center text-primary-foreground text-xs font-bold">

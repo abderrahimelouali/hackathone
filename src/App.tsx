@@ -12,6 +12,9 @@ import Accommodation from "@/pages/tourist/Accommodation";
 import TransportPage from "@/pages/tourist/TransportPage";
 import Marketplace from "@/pages/tourist/Marketplace";
 import MyBookings from "@/pages/tourist/MyBookings";
+import MapPage from "@/pages/tourist/MapPage";
+import BlogPage from "@/pages/tourist/BlogPage";
+import Profile from "@/pages/tourist/Profile";
 import HostDashboard from "@/pages/host/HostDashboard";
 import AddActivity from "@/pages/host/AddActivity";
 import ManageActivities from "@/pages/host/ManageActivities";
@@ -56,6 +59,7 @@ const AppRoutes = () => {
         <Route path="/host/add-activity" element={<HostLayout><AddActivity /></HostLayout>} />
         <Route path="/host/manage" element={<HostLayout><ManageActivities /></HostLayout>} />
         <Route path="/host/add-product" element={<HostLayout><AddProduct /></HostLayout>} />
+        <Route path="/host/profile" element={<HostLayout><Profile /></HostLayout>} />
         <Route path="*" element={<Navigate to="/host" replace />} />
       </Routes>
     );
@@ -69,6 +73,9 @@ const AppRoutes = () => {
       <Route path="/transport" element={<TouristLayout><TransportPage /></TouristLayout>} />
       <Route path="/marketplace" element={<TouristLayout><Marketplace /></TouristLayout>} />
       <Route path="/my-bookings" element={<TouristLayout><MyBookings /></TouristLayout>} />
+      <Route path="/map" element={<TouristLayout><MapPage /></TouristLayout>} />
+      <Route path="/blog" element={<TouristLayout><BlogPage /></TouristLayout>} />
+      <Route path="/profile" element={<TouristLayout><Profile /></TouristLayout>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
