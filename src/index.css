@@ -60,6 +60,60 @@
     --glass: 0 0% 100% / 0.7;
     --glass-border: 0 0% 100% / 0.2;
   }
+
+  .dark {
+    --background: 20 25% 8%;
+    --foreground: 35 25% 92%;
+
+    --card: 20 22% 12%;
+    --card-foreground: 35 25% 92%;
+
+    --popover: 20 22% 12%;
+    --popover-foreground: 35 25% 92%;
+
+    --primary: 14 65% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 20 18% 18%;
+    --secondary-foreground: 35 25% 92%;
+
+    --muted: 20 15% 16%;
+    --muted-foreground: 35 15% 55%;
+
+    --accent: 82 30% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 20 12% 20%;
+    --input: 20 12% 20%;
+    --ring: 14 65% 52%;
+
+    --terracotta: 14 65% 52%;
+    --terracotta-light: 14 55% 62%;
+    --terracotta-dark: 14 70% 42%;
+    --sand: 40 20% 20%;
+    --sand-light: 38 15% 16%;
+    --sand-dark: 40 25% 30%;
+    --olive: 82 30% 42%;
+    --olive-light: 82 25% 55%;
+    --gold: 36 75% 52%;
+    --gold-light: 36 65% 62%;
+    --gold-dark: 36 80% 42%;
+
+    --sidebar-background: 20 25% 6%;
+    --sidebar-foreground: 35 25% 92%;
+    --sidebar-primary: 14 65% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 20 18% 14%;
+    --sidebar-accent-foreground: 35 25% 92%;
+    --sidebar-border: 20 12% 16%;
+    --sidebar-ring: 14 65% 52%;
+
+    --glass: 20 22% 12% / 0.8;
+    --glass-border: 0 0% 100% / 0.08;
+  }
 }
 
 @layer base {

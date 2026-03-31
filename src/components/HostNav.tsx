@@ -2,13 +2,15 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { LayoutDashboard, Plus, List, ShoppingBag, LogOut, Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
+import NotificationBell from "@/components/NotificationBell";
+import { LayoutDashboard, Plus, List, ShoppingBag, LogOut, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const HostNav = () => {
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -48,21 +50,25 @@ const HostNav = () => {
           })}
         </div>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-1.5">
+          <ThemeToggle />
+          <NotificationBell />
           <LanguageSwitcher />
-          <div className="w-px h-6 bg-sidebar-border" />
-          <div className="flex items-center gap-2">
+          <div className="w-px h-6 bg-sidebar-border mx-1" />
+          <Link to="/host/profile" className="flex items-center gap-2 hover:bg-sidebar-accent px-2 py-1.5 rounded-lg transition-colors">
             <div className="w-8 h-8 rounded-full bg-sidebar-primary/20 border border-sidebar-primary/30 flex items-center justify-center text-sidebar-primary text-xs font-bold">
               {user?.name?.charAt(0)}
             </div>
             <span className="text-sm text-sidebar-foreground/70 hidden xl:inline">{user?.name}</span>
-          </div>
+          </Link>
           <button onClick={logout} className="flex items-center gap-1 text-sm text-sidebar-foreground/50 hover:text-destructive px-2 py-1.5 rounded-lg transition-colors">
             <LogOut className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex md:hidden items-center gap-1.5">
+          <ThemeToggle />
+          <NotificationBell />
           <LanguageSwitcher />
           <button className="text-sidebar-foreground p-2 rounded-lg hover:bg-sidebar-accent transition-colors" onClick={() => setOpen(!open)}>
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -94,6 +100,10 @@ const HostNav = () => {
                 );
               })}
               <div className="border-t border-sidebar-border my-2" />
+              <Link to="/host/profile" onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent">
+                <User className="w-5 h-5" />
+                {lang === "fr" ? "Mon profil" : lang === "en" ? "My Profile" : "ملفي الشخصي"}
+              </Link>
               <button onClick={logout} className="flex items-center gap-3 px-4 py-3 rounded-xl text-destructive hover:bg-destructive/10 text-sm w-full transition-colors">
                 <LogOut className="w-4 h-4" />
                 {t("logout")}
