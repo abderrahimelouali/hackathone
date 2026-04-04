@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ─── LIGHT MODE: Pure white, minimalist, white-space-first ─── */
+  :root {
+    --background: 0 0% 100%;          /* #FFFFFF */
+    --foreground: 0 0% 9%;            /* #171717 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+
+    --primary: 14 100% 60%;           /* #FF6B35 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;            /* #F5F5F5 */
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;     /* #737373 */
+
+    --accent: 14 100% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 91%;               /* #E8E8E8 — barely-there */
+    --input: 0 0% 96%;
+    --ring: 14 100% 60%;
+
+    --radius: 1rem;
+
+    /* Glass tokens for light mode */
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.07);
+    --glass-shadow: 0 2px 12px rgba(0,0,0,0.06);
+
+    --card-bg: #FFFFFF;
+    --card-border: #EDEDED;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 16px 40px rgba(0,0,0,0.08);
+  }
+
+  /* ─── DARK MODE: True black, glassy, vibrant ─── */
+  .dark {
+    --background: 0 0% 4%;            /* #0A0A0A */
+    --foreground: 0 0% 98%;           /* #FAFAFA */
+
+    --card: 0 0% 8%;                  /* #141414 */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 14 100% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 55%;
+
+    --accent: 14 100% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 100% / 0.09;
+    --input: 0 0% 100% / 0.06;
+    --ring: 14 100% 60%;
+
+    /* Glass tokens for dark mode */
+    --glass-bg: rgba(20, 20, 20, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.4);
+
+    --card-bg: rgba(28, 28, 28, 0.7);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    --card-shadow-hover: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,107,53,0.08);
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-black tracking-tight;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  p { line-height: 1.7; }
+}
+
+@layer utilities {
+  /* ─── GLASS: uses tokens, adapts to light/dark automatically ─── */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Always-dark glass — for use on top of images regardless of theme */
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* ─── CARD: clean white in light, rich dark in dark ─── */
+  .glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* ─── INTERACTIVE CARDS ─── */
+  .card-interactive {
+    @apply glass-card rounded-[20px] transition-all duration-300;
+  }
+
+  .card-interactive:hover {
+    @apply -translate-y-2;
+    box-shadow: var(--card-shadow-hover);
+    border-color: rgba(255, 107, 53, 0.25);
+  }
+
+  /* ─── TEXT GRADIENT ─── */
+  .text-gradient {
+    background: linear-gradient(135deg, #FF6B35 0%, #FFA726 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    @apply px-8 py-4 rounded-xl text-white font-black transition-all duration-300;
+    background: linear-gradient(135deg, #FF6B35 0%, #FFA726 100%);
+    box-shadow: 0 4px 14px rgba(255, 107, 53, 0.3);
+  }
+  .btn-primary:hover {
+    @apply scale-[1.03];
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.45);
+  }
+
+  .btn-secondary {
+    @apply px-8 py-4 rounded-xl font-black border transition-all duration-300;
+    border-color: #FF6B35;
+    color: #FF6B35;
+    background: transparent;
+  }
+  .btn-secondary:hover {
+    background: rgba(255, 107, 53, 0.06);
+    @apply scale-[1.03];
+  }
+
+  /* ─── SHADOW ─── */
+  .shadow-premium {
+    box-shadow: var(--card-shadow);
+  }
+
+  /* ─── BADGE ─── */
+  .badge-premium {
+    @apply px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest text-white;
+    background: #FF6B35;
+  }
+}
