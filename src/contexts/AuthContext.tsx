@@ -83,6 +83,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (res.data.requiresVerification) {
           return { requiresVerification: true };
       }
+
+      // Auto-login after register for the demo
+      const { token, ...userData } = res.data;
+      const userWithId = { ...userData, id: userData._id };
+      
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(USER_KEY, JSON.stringify(userWithId));
+      setUser(userWithId);
+
       return {};
     } catch (error: any) {
       const message = error.response?.data?.message || "Registration failed. Please try again.";

@@ -1,16 +1,104 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import Activity from './models/Activity.js';
-import Stay from './models/Stay.js';
-import Transport from './models/Transport.js';
-import Product from './models/Product.js';
-import BlogPost from './models/BlogPost.js';
-import MapLocation from './models/MapLocation.js';
+// Image imports removed in favor of public paths
 
-dotenv.config();
+export type Activity = {
+  id: string;
+  title: string;
+  titleFr?: string;
+  titleEn?: string;
+  description: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+  category: string;
+  price: number;
+  duration: string;
+  durationFr?: string;
+  durationEn?: string;
+  hasGuide: boolean;
+  image: string;
+  hostId: string;
+  rating: number;
+  location: string;
+  locationFr?: string;
+  locationEn?: string;
+  lat: number;
+  lng: number;
+  difficulty?: string;
+  color: "violet" | "orange" | "yellow" | "green" | "purple" | "pink";
+};
 
-const activities = [
+export type Booking = {
+  id: string;
+  userId: string;
+  activityId: string;
+  date: string;
+  persons: number;
+  status: "مؤكد" | "قيد الانتظار" | "ملغى";
+};
+
+export type Stay = {
+  id: string;
+  title: string;
+  type: "فندق" | "منزل";
+  description: string;
+  price: number;
+  image: string;
+  rating: number;
+  amenities: string[];
+};
+
+export type Transport = {
+  id: string;
+  title: string;
+  type: "كراء سيارة" | "نقل سياحي";
+  description: string;
+  price: number;
+  image: string;
+};
+
+export type Product = {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  category: string;
+  hostId: string;
+};
+
+export type BlogPost = {
+  id: string;
+  title: string;
+  titleFr: string;
+  titleEn: string;
+  excerpt: string;
+  excerptFr: string;
+  excerptEn: string;
+  content: string;
+  contentFr?: string;
+  contentEn?: string;
+  image: string;
+  date: string;
+  author: string;
+  tags: string[];
+};
+
+export type MapLocation = {
+  id: string;
+  name: string;
+  nameFr?: string;
+  nameEn?: string;
+  type: "nature" | "heritage" | "shopping" | "culture" | "adventure";
+  lat: number;
+  lng: number;
+  emoji: string;
+  description?: string;
+  descriptionFr?: string;
+  descriptionEn?: string;
+};
+
+export const initialActivities: Activity[] = [
   {
+    id: "1",
     title: "تجربة الطبخ المغربي التقليدي",
     titleFr: "Cours de Cuisine Traditionnelle",
     titleEn: "Traditional Cooking Experience",
@@ -35,6 +123,7 @@ const activities = [
     color: "yellow",
   },
   {
+    id: "2",
     title: "مغامرة المشي في مضيق تودغا",
     titleFr: "Randonnée dans les Gorges du Todgha",
     titleEn: "Hiking Adventure in Todra Gorge",
@@ -59,6 +148,7 @@ const activities = [
     color: "green",
   },
   {
+    id: "3",
     title: "تسلق جبال الأطلس الكبير",
     titleFr: "Escalade dans le Haut Atlas",
     titleEn: "High Atlas Climbing",
@@ -83,6 +173,7 @@ const activities = [
     color: "violet",
   },
   {
+    id: "4",
     title: "جولة بالدراجات على ضفاف الواحة",
     titleFr: "Tour à Vélo dans l'Oasis",
     titleEn: "Oasis Bicycle Tour",
@@ -107,6 +198,7 @@ const activities = [
     color: "orange",
   },
   {
+    id: "6",
     title: "جولة بالدراجات الرباعية (Quad)",
     titleFr: "Excursion en Quad",
     titleEn: "Quad Biking Tour",
@@ -131,6 +223,7 @@ const activities = [
     color: "orange",
   },
   {
+    id: "8",
     title: "ركوب الخيل في الواحة",
     titleFr: "Équitation dans l'Oasis",
     titleEn: "Horse Riding in the Oasis",
@@ -155,6 +248,7 @@ const activities = [
     color: "pink",
   },
   {
+    id: "9",
     title: "قافلة الجمال عبر الصحراء",
     titleFr: "Caravane de Chameaux",
     titleEn: "Camel Caravan Experience",
@@ -179,6 +273,7 @@ const activities = [
     color: "orange",
   },
   {
+    id: "10",
     title: "ورشة الفخار التقليدي",
     titleFr: "Atelier de Poterie Traditionnelle",
     titleEn: "Traditional Pottery Workshop",
@@ -203,6 +298,7 @@ const activities = [
     color: "pink",
   },
   {
+    id: "11",
     title: "ورشة النسيج الأمازيغي",
     titleFr: "Atelier de Tissage Amazigh",
     titleEn: "Amazigh Weaving Workshop",
@@ -219,110 +315,108 @@ const activities = [
     hostId: "host1",
     rating: 4.7,
     location: "تعاونية النسيج، تنغير",
-    locationFr: "Coopérative de Tissage, Tinghir",
     locationEn: "Weaving Cooperative, Tinghir",
     lat: 31.5120,
     lng: -5.5310,
     difficulty: "سهل",
     color: "purple",
-  }
+  },
 ];
 
-const stays = [
+
+export const initialStays: Stay[] = [
   {
+    id: "s1",
     title: "رياض النخيل الفاخر",
-    titleFr: "Riad Al Nakheel Luxe",
-    titleEn: "Palm Riad Luxury",
     type: "فندق",
     description: "رياض تقليدي مغربي بتصميم أندلسي فاخر. غرف واسعة مزينة بالزليج والنقش على الخشب، مسبح داخلي، وإفطار مغربي أصيل.",
-    descriptionFr: "Riad traditionnel marocain au design andalou luxueux. Chambres spacieuses, piscine intérieure et petit-déjeuner authentique.",
-    descriptionEn: "Traditional Moroccan Riad with luxurious Andalusian design. Spacious rooms, indoor pool and authentic Moroccan breakfast.",
     price: 450,
     image: "/images/stays/hotel.jpg",
     rating: 4.9,
     amenities: ["واي فاي", "مسبح", "إفطار", "موقف سيارات", "تكييف"],
   },
   {
+    id: "s2",
     title: "دار الواحة التقليدي",
-    titleFr: "Maison de l'Oasis",
-    titleEn: "Oasis Heritage House",
     type: "منزل",
     description: "منزل تقليدي من الطوب المحلي وسط واحة النخيل. أجواء هادئة وأصيلة مع إطلالة على الجبال.",
-    descriptionFr: "Maison traditionnelle en pisé au cœur de la palmeraie. Ambiance calme et authentique avec vue sur les montagnes.",
-    descriptionEn: "Traditional clay house in the heart of the palm oasis. Quiet and authentic atmosphere with mountain views.",
     price: 280,
     image: "/images/stays/home.jpg",
     rating: 4.7,
     amenities: ["واي فاي", "مطبخ", "حديقة", "موقف سيارات"],
-  }
+  },
 ];
 
-const transports = [
+export const initialTransport: Transport[] = [
   {
+    id: "t1",
     title: "كراء سيارة 4x4",
-    titleFr: "Location 4x4",
-    titleEn: "4x4 Car Rental",
     type: "كراء سيارة",
     description: "سيارات دفع رباعي حديثة مناسبة لاستكشاف المناطق الجبلية والصحراوية. تأمين شامل وكيلومترات غير محدودة.",
-    descriptionFr: "Véhicules tout-terrain modernes pour explorer les montagnes et le désert. Assurance tous risques incluse.",
-    descriptionEn: "Modern 4x4 vehicles suitable for exploring mountains and desert areas. Full insurance and unlimited mileage.",
     price: 400,
     image: "/images/activities/climbing.jpg",
   },
   {
+    id: "t2",
     title: "نقل سياحي مع سائق",
-    titleFr: "Transport Touristique",
-    titleEn: "Tourist Transport with Driver",
     type: "نقل سياحي",
     description: "خدمة نقل مريحة مع سائق محلي يعرف المنطقة. مثالي لزيارة المعالم والمواقع السياحية.",
-    descriptionFr: "Service de transport confortable avec chauffeur local. Idéal pour visiter les sites touristiques.",
-    descriptionEn: "Comfortable transport service with a local driver. Ideal for visiting monuments and tourist attractions.",
     price: 300,
     image: "/images/transport/minibus.jpg",
-  }
+  },
 ];
 
-const products = [
+export const initialProducts: Product[] = [
   {
+    id: "p1",
     title: "زعفران تاليوين الأصلي",
-    titleFr: "Safran Pur de Taliouine",
-    titleEn: "Pure Taliouine Saffron",
     description: "زعفران حر ممتاز من منطقة تاليوين، معروف بجودته العالية ورائحته الفريدة. منتج طبيعي 100%.",
-    descriptionFr: "Safran pur de qualité supérieure, célèbre pour son arôme unique. Produit 100% naturel.",
-    descriptionEn: "Premium saffron from Taliouine, famous for its high quality and unique aroma. 100% natural.",
     price: 150,
     image: "/images/shop/products.jpg",
     category: "توابل",
     hostId: "host1",
   },
   {
+    id: "p2",
     title: "زربية أمازيغية يدوية",
-    titleFr: "Tapis Amazigh Fait Main",
-    titleEn: "Handmade Amazigh Carpet",
     description: "زربية تقليدية منسوجة يدوياً بصوف طبيعي وألوان نباتية. تصاميم أمازيغية أصيلة من منطقة دادس.",
-    descriptionFr: "Tapis traditionnel tissé à la main avec de la laine naturelle et des teintures végétales.",
-    descriptionEn: "Traditional hand-woven carpet with natural wool and vegetable dyes. Authentic designs from Dades.",
     price: 2500,
     image: "/images/activities/weaving.jpg",
     category: "زرابي",
     hostId: "host1",
   },
   {
+    id: "p3",
     title: "حلي فضية تقليدية",
-    titleFr: "Bijoux en Argent Traditionnels",
-    titleEn: "Traditional Silver Jewelry",
     description: "طقم فضة تيزنيت مصنوع يدوياً بمهارة عالية. تعكس التراث العريق للصياغة المغربية.",
-    descriptionFr: "Ensemble en argent fabriqué à la main par des artisans qualifiés. Reflète l'héritage marocain.",
-    descriptionEn: "Handmade silver jewelry set by skilled craftsmen. Reflects the ancient Moroccan heritage.",
     price: 850,
     image: "/images/activities/pottery.jpg",
     category: "حلي",
     hostId: "host1",
-  }
+  },
+  {
+    id: "p4",
+    title: "زيت أرغان للتجميل",
+    description: "زيت أرغان بكر ممتاز مستخرج بآلات تقليدية. غني بالفيتامينات ومثالي للعناية بالبشرة والشعر.",
+    price: 120,
+    image: "/images/shop/products.jpg",
+    category: "تجميل",
+    hostId: "host1",
+  },
+  {
+    id: "p5",
+    title: "فخار وادي تودغا",
+    description: "أواني وحاملات شموع فخارية مزينة بنقوش يدوية تقليدية. قطعة فنية تضفي لمسة عريقة على منزلك.",
+    price: 70,
+    image: "/images/activities/pottery.jpg",
+    category: "فخار",
+    hostId: "host1",
+  },
 ];
 
-const blogs = [
+export const blogPosts: BlogPost[] = [
   {
+    id: "b5",
     title: "نظام الري التقليدي (الخطارات): عبقرية هندسية في قلب الواحة",
     titleFr: "Le Système d'Irrigation Traditionnel (Khettaras) : Génie Hydraulique",
     titleEn: "Traditional Irrigation System (Khettaras): Hydraulic Genius",
@@ -350,6 +444,7 @@ Today, as the world faces climate challenges and water scarcity, the Khettaras s
     tags: ["هندسة", "تراث"],
   },
   {
+    id: "b6",
     title: "دور التعاونيات في الحفاظ على التراث والتمكين الاجتماعي",
     titleFr: "Le Rôle des Coopératives dans la Préservation du Patrimoine",
     titleEn: "The Role of Cooperatives in Heritage Preservation",
@@ -377,6 +472,7 @@ Beyond culture, cooperatives foster women's economic empowerment in Tinghir. The
     tags: ["مجتمع", "حرف"],
   },
   {
+    id: "b7",
     title: "دليل زيارة Todra Gorge: كل ما يجب معرفته عن مضايق تودغا",
     titleFr: "Guide de Visite de Todra Gorge : Immersion dans le Canyon",
     titleEn: "Todra Gorge Visitor Guide: Essential Tips",
@@ -390,7 +486,7 @@ Beyond culture, cooperatives foster women's economic empowerment in Tinghir. The
 توقيت الزيارة: أفضل وقت للاستمتاع بالهدوء هو في الصباح الباكر قبل وصول الحافلات السياحية الكبيرة. كما ننصح بالزيارة في فصلي الربيع والخريف حيث يكون الجو معتدلاً. تذكر دائماً احترام حرمة المنطقة الطبيعية ودعم المرشدين المحليين الذين يمتلكون معرفة عميقة بتاريخ وأساطير هذه الجدران الصخرية العظيمة.`,
     contentFr: `Les Gorges du Todgha sont une merveille géologique unique au Maroc. Les parois calcaires s'y élèvent verticalement à plus de 300 mètres, créant un corridor spectaculaire où coule l'eau cristalline de l'Oued Todgha, qui irrigue l'oasis luxuriante en contrebas.
 
-Pour une immersion totale, commencez votre randonnée à l'aube par le "sentier des mules", un chemin ancestral offrant des vues panoramiques à couper le souffle sur le canyon et la palmeraie. Les Gorges sont aussi un spot de renommée mondiale pour l'escalade, avec des voies adaptés à tous les niveaux de pratique.
+Pour une immersion totale, commencez votre randonnée à l'aube par le "sentier des mules", un chemin ancestral offrant des vues panoramiques à couper le souffle sur le canyon et la palmeraie. Les Gorges sont aussi un spot de renommée mondiale pour l'escalade, avec des voies adaptées à tous les niveaux de pratique.
 
 Conseils pratiques : Arrivez tôt pour profiter du silence de la roche avant l'afflux des visiteurs. Le printemps et l'automne sont les saisons idéales pour le climat. Pensez à solliciter des guides locaux pour découvrir les sentiers secrets et l'histoire fascinante de ce lieu sacré pour les tribus de la région.`,
     contentEn: `The Todra Gorge is a geological wonder of Morocco, where limestone cliffs tower more than 300 meters above the canyon floor. Through this massive corridor flows the crystal-clear Todra River, feeding one of the greenest oases in the southern Sahara region.
@@ -404,6 +500,7 @@ When to visit: Early morning is the best time to experience the majesty of the r
     tags: ["سياحة", "مغامرة"],
   },
   {
+    id: "b4",
     title: "الحرف اليدوية: كنوز تنغير المخفية وجمالية الصنعة",
     titleFr: "L'Artisanat : Les Trésors Cachés de Tinghir",
     titleEn: "Handicrafts: Tinghir's Hidden Treasures",
@@ -432,50 +529,13 @@ Visiting the "artisan quarter" is an educational journey through time. Buying th
   },
 ];
 
-const initialMapLocations = [
-  { name: "مضيق تودغا", nameFr: "Gorges du Todgha", nameEn: "Todgha Gorge", lat: 31.5889, lng: -5.5703, type: "nature", emoji: "🏔️" },
-  { name: "واحة تنغير", nameFr: "Oasis de Tinghir", nameEn: "Tinghir Oasis", lat: 31.5147, lng: -5.5328, type: "nature", emoji: "🌴" },
-  { name: "قصبة تنغير", nameFr: "Kasbah de Tinghir", nameEn: "Tinghir Kasbah", lat: 31.5125, lng: -5.5312, type: "heritage", emoji: "🏰" },
-  { name: "سوق تنغير", nameFr: "Souk de Tinghir", nameEn: "Tinghir Souk", lat: 31.5135, lng: -5.5295, type: "shopping", emoji: "🛍️" },
-  { name: "حي الحرفيين", nameFr: "Quartier des Artisans", nameEn: "Artisans Quarter", lat: 31.5110, lng: -5.5340, type: "culture", emoji: "🎨" },
-  { name: "جبل صاغرو", nameFr: "Jbel Saghro", nameEn: "Jbel Saghro", lat: 31.3500, lng: -5.8500, type: "adventure", emoji: "⛰️" },
-  { name: "بحيرة إيسلي", nameFr: "Lac Isli", nameEn: "Lake Isli", lat: 31.7000, lng: -5.6300, type: "nature", emoji: "💧" },
-  { name: "القصر القديم", nameFr: "Ancien Ksar", nameEn: "Old Ksar", lat: 31.5150, lng: -5.5280, type: "heritage", emoji: "🕌" },
+export const mapLocations: MapLocation[] = [
+  { id: "m1", name: "مضيق تودغا", nameFr: "Gorges du Todgha", nameEn: "Todgha Gorge", lat: 31.5889, lng: -5.5703, type: "nature", emoji: "🏔️" },
+  { id: "m2", name: "واحة تنغير", nameFr: "Oasis de Tinghir", nameEn: "Tinghir Oasis", lat: 31.5147, lng: -5.5328, type: "nature", emoji: "🌴" },
+  { id: "m3", name: "قصبة تنغير", nameFr: "Kasbah de Tinghir", nameEn: "Tinghir Kasbah", lat: 31.5125, lng: -5.5312, type: "heritage", emoji: "🏰" },
+  { id: "m4", name: "سوق تنغير", nameFr: "Souk de Tinghir", nameEn: "Tinghir Souk", lat: 31.5135, lng: -5.5295, type: "shopping", emoji: "🛍️" },
+  { id: "m5", name: "حي الحرفيين", nameFr: "Quartier des Artisans", nameEn: "Artisans Quarter", lat: 31.5110, lng: -5.5340, type: "culture", emoji: "🎨" },
+  { id: "m6", name: "جبل صاغرو", nameFr: "Jbel Saghro", nameEn: "Jbel Saghro", lat: 31.3500, lng: -5.8500, type: "adventure", emoji: "⛰️" },
+  { id: "m7", name: "بحيرة إيسلي", nameFr: "Lac Isli", nameEn: "Lake Isli", lat: 31.7000, lng: -5.6300, type: "nature", emoji: "💧" },
+  { id: "m8", name: "القصر القديم", nameFr: "Ancien Ksar", nameEn: "Old Ksar", lat: 31.5150, lng: -5.5280, type: "heritage", emoji: "🕌" },
 ];
-
-const restoreAll = async () => {
-  try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/experiencia';
-    await mongoose.connect(mongoUri);
-    console.log("🚀 Starting Full Database Restoration...");
-
-    // Clear all relevant collections
-    await Promise.all([
-      Activity.deleteMany({}),
-      Stay.deleteMany({}),
-      Transport.deleteMany({}),
-      Product.deleteMany({}),
-      BlogPost.deleteMany({}),
-      MapLocation.deleteMany({})
-    ]);
-    console.log("✅ Collections cleared.");
-
-    // Insert all data
-    await Promise.all([
-      Activity.insertMany(activities),
-      Stay.insertMany(stays),
-      Transport.insertMany(transports),
-      Product.insertMany(products),
-      BlogPost.insertMany(blogs),
-      MapLocation.insertMany(initialMapLocations)
-    ]);
-
-    console.log("✨ All data restored successfully with the new multilingual schema!");
-    process.exit(0);
-  } catch (error) {
-    console.error("❌ Critical restoration error:", error);
-    process.exit(1);
-  }
-};
-
-restoreAll();
