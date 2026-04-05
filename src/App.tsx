@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-// import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { DataProvider } from "@/contexts/DataProvider";
@@ -26,6 +25,7 @@ import AddProduct from "@/pages/host/AddProduct";
 import AddBlogPost from "@/pages/host/AddBlogPost";
 import Terms from "@/pages/Terms";
 import Welcome from "@/pages/Welcome";
+import VerifyEmail from "@/pages/auth/VerifyEmail";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +52,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
@@ -109,8 +110,6 @@ const AppRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      {/* Toaster removed for prototype */}
-      {/* <Sonner position="bottom-right" closeButton expand={false} /> */}
       <LanguageProvider>
         <AuthProvider>
           <DataProvider>
