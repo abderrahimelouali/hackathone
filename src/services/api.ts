@@ -39,6 +39,18 @@ export const deleteMapLocation = (id: string) => wrap({ success: true, id });
 // Auth Endpoints (Mock)
 export const login = (data: any) => {
   const email = data.email.toLowerCase();
+  
+  // Specific Superadmin Credentials
+  if (email === "admin@experiencia.com" && data.password === "admin123") {
+    return wrap({
+      _id: "admin123",
+      name: "Super Admin",
+      email: data.email,
+      role: "superAdmin",
+      token: "fake-jwt-token"
+    });
+  }
+
   const isHost = email.includes("host");
   const isAdmin = email.includes("admin");
   
@@ -53,17 +65,17 @@ export const login = (data: any) => {
 };
 
 export const register = (data: any) => {
-  const mockUser = {
-    _id: "user123",
-    name: data.name,
+  // Always return requiresVerification for the demo
+  return wrap({
+    requiresVerification: true,
     email: data.email,
-    role: data.role || "tourist",
-    token: "fake-jwt-token"
-  };
-  return wrap(mockUser);
+    name: data.name,
+    role: data.role || "tourist"
+  });
 };
 
 export const verifyOTP = (data: { email: string, code: string }) => {
+    // ANY CODE PASSES
     const email = data.email.toLowerCase();
     const isHost = email.includes("host");
     const isAdmin = email.includes("admin");
